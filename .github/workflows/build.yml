@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: make release
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create ${GITHUB_REF##*/}
   build-linux:
