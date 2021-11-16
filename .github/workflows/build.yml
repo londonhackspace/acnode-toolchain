@@ -1,5 +1,8 @@
 name: build-dockerfile
-on: [push]
+on:
+  push:
+    tags:        
+      - 'v*'
 jobs:
   build-container:
     runs-on: ubuntu-latest
@@ -17,6 +20,11 @@ jobs:
           context: builder/
           push: true
           tags: ghcr.io/londonhackspace/acnode-toolchain-builder:latest
+  make-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: make release
+        gh release create ${GITHUB_REF##*/}
   build-linux:
     needs: build-container
     runs-on: ubuntu-latest
@@ -34,4 +42,22 @@ jobs:
           su builder -c "ct-ng build"
           cd /home/builder/x-tools/arm-none-eabi/
           tar -cjf ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2
-          gh release create latest ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2
+          gh release upload ${GITHUB_REF##*/} ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2
+  build-windows:
+    needs: build-container
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/londonhackspace/acnode-toolchain-builder:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp windows-config .config
+          chmod 777 . -R
+          su builder -c "ct-ng build"
+          cd /home/builder/x-tools/HOST-x86_64-w64-mingw32/arm-none-eabi/
+          zip ${GITHUB_WORKSPACE}/toolchain-windows.zip *
+          gh release upload ${GITHUB_REF##*/} ${GITHUB_WORKSPACE}/toolchain-windows.zip
