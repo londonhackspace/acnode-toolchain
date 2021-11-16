@@ -23,6 +23,8 @@ jobs:
   make-release:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
       - name: make release
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
