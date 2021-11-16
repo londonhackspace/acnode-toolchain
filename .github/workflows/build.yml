@@ -17,3 +17,20 @@ jobs:
           context: builder/
           push: true
           tags: ghcr.io/londonhackspace/acnode-toolchain-builder:latest
+  build-linux:
+    needs: build-container
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/londonhackspace/acnode-toolchain-builder:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp linux-config .config
+          ct-ng build
+          pushd ~/x-tools/arm-none-eabi/
+          tar -cjf /toolchain-linux.tar.bz2
+          gh release upload latest /toolchain-linux.tar.bz2 --clobber
