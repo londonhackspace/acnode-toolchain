@@ -30,7 +30,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp linux-config .config
-          su - c "ct-ng build"
+          su builder -c "ct-ng build"
           cd /home/builder/x-tools/arm-none-eabi/
           tar -cjf ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2
           gh release upload latest ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2 --clobber
