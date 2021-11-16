@@ -18,6 +18,7 @@ RUN apt-get update && \
 		help2man \
 		wget \
 		curl \
+		mingw-w64 \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -37,7 +38,5 @@ RUN git clone https://github.com/crosstool-ng/crosstool-ng.git \
 	&& rm -rf crosstool-ng
 
 RUN useradd -m builder
-
-USER builder
 
 
