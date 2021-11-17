@@ -29,7 +29,7 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${GITHUB_REF##*/}
+          gh release create -p ${GITHUB_REF##*/}
   build-linux:
     needs: build-container
     runs-on: ubuntu-latest
