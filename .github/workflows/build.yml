@@ -46,7 +46,7 @@ jobs:
           chmod 777 . -R
           su builder -c "ct-ng build"
           cd /home/builder/x-tools/arm-none-eabi/
-          tar -cjf ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2
+          tar -cjf ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2 *
           gh release upload ${GITHUB_REF##*/} ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2
   build-windows:
     needs: build-container
