@@ -45,7 +45,7 @@ jobs:
           cp linux-config .config
           chmod 777 . -R
           su builder -c "ct-ng build"
-          cd /home/builder/x-tools/arm-none-eabi/
+          cd /home/builder/x-tools/arm-none-eabihf/
           tar -cjf ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2 *
           cd ${GITHUB_WORKSPACE}
           gh release upload ${GITHUB_REF##*/} ${GITHUB_WORKSPACE}/toolchain-linux.tar.bz2
@@ -64,7 +64,7 @@ jobs:
           cp windows-config .config
           chmod 777 . -R
           su builder -c "ct-ng build"
-          cd /home/builder/x-tools/HOST-x86_64-w64-mingw32/arm-none-eabi/
+          cd /home/builder/x-tools/HOST-x86_64-w64-mingw32/arm-none-eabihf/
           zip -r ${GITHUB_WORKSPACE}/toolchain-windows.zip *
           cd ${GITHUB_WORKSPACE}
           gh release upload ${GITHUB_REF##*/} ${GITHUB_WORKSPACE}/toolchain-windows.zip
